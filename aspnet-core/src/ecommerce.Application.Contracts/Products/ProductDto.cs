@@ -5,9 +5,9 @@ namespace ecommerce.Products;
 
 public class ProductDto : AuditedEntityDto<Guid>
 {
-    public string Name { get; }
-    public string Description { get;  }
-    public double Price { get;  }
-    public int Stock  { get;  }
-    public ProductCategory Category { get; }
+    public string Name { get; set;}
+    public string Description { get; set; }
+    public double Price { get; set; }
+    public int Stock  { get; set; }
+    public ProductCategory Category { get; set;}
 }

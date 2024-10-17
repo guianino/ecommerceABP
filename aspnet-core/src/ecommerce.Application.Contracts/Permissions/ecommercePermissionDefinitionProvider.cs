@@ -8,9 +8,12 @@ public class ecommercePermissionDefinitionProvider : PermissionDefinitionProvide
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        var myGroup = context.AddGroup(ecommercePermissions.GroupName);
-        //Define your own permissions here. Example:
-        //myGroup.AddPermission(ecommercePermissions.MyPermission1, L("Permission:MyPermission1"));
+        var ecommerceGroup = context.AddGroup(ecommercePermissions.GroupName, L("Permission:ecommerce"));
+
+        var ProductsPermission = ecommerceGroup.AddPermission(ecommercePermissions.Products.Default, L("Permission:Products"));
+        ProductsPermission.AddChild(ecommercePermissions.Products.Create, L("Permission:Products.Create"));
+        ProductsPermission.AddChild(ecommercePermissions.Products.Edit, L("Permission:Products.Edit"));
+        ProductsPermission.AddChild(ecommercePermissions.Products.Delete, L("Permission:Products.Delete"));
     }
 
     private static LocalizableString L(string name)

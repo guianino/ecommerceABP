@@ -5,5 +5,11 @@
     "Menu:Home": "Home",
     "Welcome": "Welcome",
     "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io."
-  }
+  },
+"Permission:ecommerce": "Ecommerce",
+"Permission:Products": "Product Management",
+"Permission:Products.Create": "Creating new Products",
+"Permission:Products.Edit": "Editing the Products",
+"Permission:Products.Delete": "Deleting the Products"
+
 }

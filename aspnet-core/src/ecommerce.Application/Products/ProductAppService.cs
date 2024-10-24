@@ -2,6 +2,7 @@ using System;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using ecommerce.Permissions;
 
 namespace ecommerce.Products;
 
@@ -17,6 +18,10 @@ public class ProductAppService :
     public ProductAppService(IRepository<Product, Guid> repository)
         : base(repository)
     {
-
+        GetPolicyName = ecommercePermissions.Products.Default;
+        GetListPolicyName = ecommercePermissions.Products.Default;
+        CreatePolicyName = ecommercePermissions.Products.Create;
+        UpdatePolicyName = ecommercePermissions.Products.Edit;
+        DeletePolicyName = ecommercePermissions.Products.Delete;
     }
 }

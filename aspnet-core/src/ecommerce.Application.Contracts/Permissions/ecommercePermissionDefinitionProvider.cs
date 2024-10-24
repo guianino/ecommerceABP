@@ -8,12 +8,12 @@ public class ecommercePermissionDefinitionProvider : PermissionDefinitionProvide
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        var ecommerceGroup = context.AddGroup(ecommercePermissions.GroupName, L("Permission:ecommerce"));
+        var ecommerceGroup = context.AddGroup(ecommercePermissions.GroupName, L("Permission:Ecommerce"));
 
-        var ProductsPermission = ecommerceGroup.AddPermission(ecommercePermissions.Products.Default, L("Permission:Products"));
-        ProductsPermission.AddChild(ecommercePermissions.Products.Create, L("Permission:Products.Create"));
-        ProductsPermission.AddChild(ecommercePermissions.Products.Edit, L("Permission:Products.Edit"));
-        ProductsPermission.AddChild(ecommercePermissions.Products.Delete, L("Permission:Products.Delete"));
+        var productsPermission = ecommerceGroup.AddPermission(ecommercePermissions.Products.Default, L("Permission:Products"));
+        productsPermission.AddChild(ecommercePermissions.Products.Create, L("Permission:Products.Create"));
+        productsPermission.AddChild(ecommercePermissions.Products.Edit, L("Permission:Products.Edit"));
+        productsPermission.AddChild(ecommercePermissions.Products.Delete, L("Permission:Products.Delete"));
     }
 
     private static LocalizableString L(string name)

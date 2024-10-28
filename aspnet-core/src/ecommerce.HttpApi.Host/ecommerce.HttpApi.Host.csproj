@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>desable</Nullable>
     <RootNamespace>ecommerce</RootNamespace>
     <PreserveCompilationReferences>true</PreserveCompilationReferences>
     <UserSecretsId>ecommerce-4681b4fd-151f-4221-84a4-929d86723e4c</UserSecretsId>

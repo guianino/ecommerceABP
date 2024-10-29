@@ -10,5 +10,6 @@
   "Permission:Products": "Product Management",
   "Permission:Products.Create": "Creating new Products",
   "Permission:Products.Edit": "Editing the Products",
-  "Permission:Products.Delete": "Deleting the Products"
+  "Permission:Products.Delete": "Deleting the Products",
+  "Ecommerce:00001": "There is already an Costumer with the same name: {name}"
 }

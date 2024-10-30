@@ -2,6 +2,7 @@
 using Volo.Abp.Data;
 using Volo.Abp.MongoDB;
 using ecommerce.Products;
+using ecommerce.Costumers;
 
 namespace ecommerce.MongoDB;
 
@@ -13,6 +14,7 @@ public class ecommerceMongoDbContext : AbpMongoDbContext
      */
 
     public IMongoCollection<Product> Products => Collection<Product>(); 
+    public IMongoCollection<Costumer> Costumers => Collection<Costumer>(); 
 
     protected override void CreateModel(IMongoModelBuilder modelBuilder)
     {

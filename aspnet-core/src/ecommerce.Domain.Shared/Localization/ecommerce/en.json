@@ -11,5 +11,9 @@
   "Permission:Products.Create": "Creating new Products",
   "Permission:Products.Edit": "Editing the Products",
   "Permission:Products.Delete": "Deleting the Products",
-  "Ecommerce:00001": "There is already an Costumer with the same name: {name}"
+  "Ecommerce:00001": "There is already an Costumer with the same name: {name}",
+  "Permission:Costumers": "Costumer Management",
+  "Permission:Costumers.Create": "Creating new costumers",
+  "Permission:Costumers.Edit": "Editing the costumers",
+  "Permission:Costumers.Delete": "Deleting the costumers"
 }

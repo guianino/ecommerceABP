@@ -14,6 +14,16 @@ public class ecommercePermissionDefinitionProvider : PermissionDefinitionProvide
         productsPermission.AddChild(ecommercePermissions.Products.Create, L("Permission:Products.Create"));
         productsPermission.AddChild(ecommercePermissions.Products.Edit, L("Permission:Products.Edit"));
         productsPermission.AddChild(ecommercePermissions.Products.Delete, L("Permission:Products.Delete"));
+
+        var authorsPermission = ecommerceGroup.AddPermission(
+        ecommercePermissions.Costumers.Default, L("Permission:Costumers"));
+        authorsPermission.AddChild(
+            ecommercePermissions.Costumers.Create, L("Permission:Costumers.Create"));
+        authorsPermission.AddChild(
+            ecommercePermissions.Costumers.Edit, L("Permission:Costumers.Edit"));
+        authorsPermission.AddChild(
+            ecommercePermissions.Costumers.Delete, L("Permission:Costumers.Delete"));
+
     }
 
     private static LocalizableString L(string name)

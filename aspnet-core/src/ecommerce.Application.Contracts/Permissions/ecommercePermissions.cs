@@ -13,4 +13,12 @@ public static class ecommercePermissions
 
     }
 
+    public static class Costumers
+    {
+        public const string Default = GroupName + ".Costumers";
+        public const string Create = Default + ".Create";
+        public const string Edit = Default + ".Edit";
+        public const string Delete = Default + ".Delete";
+    }
+
 }

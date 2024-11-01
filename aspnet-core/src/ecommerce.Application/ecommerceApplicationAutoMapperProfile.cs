@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ecommerce.Costumers;
 using ecommerce.Products;
 
 namespace ecommerce;
@@ -13,5 +14,6 @@ public class ecommerceApplicationAutoMapperProfile : Profile
 
          CreateMap<Product, ProductDto>();
          CreateMap<CreateUpdateProductDto, Product>();
+         CreateMap<Costumer, CostumerDto>();
     }
 }

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using ecommerce.Permissions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Caching.Distributed;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Caching;
 
 namespace ecommerce.Costumers
 {
@@ -14,6 +16,12 @@ namespace ecommerce.Costumers
     {
         private readonly ICostumerRepository CostumerRepository;
         private readonly CostumerManager CostumerManager;
+        private readonly IDistributedCache<CostumerCacheItem, Guid> _costumerCache;
+
+        public CostumerAppService(IDistributedCache<CostumerCacheItem, Guid> costumerCache)
+        {
+            _costumerCache = costumerCache;
+        }
 
         public CostumerAppService(ICostumerRepository costumerRepository, CostumerManager costumerManager)
         {

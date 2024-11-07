@@ -12,18 +12,18 @@ namespace ecommerce.Costumers
     [Authorize(ecommercePermissions.Costumers.Default)]
     public class CostumerAppService : ecommerceAppService, ICostumerAppService
     {
-        private readonly ICostumerRepository CostumerRepository;
-        private readonly CostumerManager CostumerManager;
+        private readonly ICostumerRepository _costumerRepository;
+        private readonly CostumerManager _costumerManager;
 
         public CostumerAppService(ICostumerRepository costumerRepository, CostumerManager costumerManager)
         {
-            CostumerRepository = costumerRepository;
-            CostumerManager = costumerManager;
+            _costumerRepository = costumerRepository;
+            _costumerManager = costumerManager;
         }
 
         public async Task<CostumerDto> GetAsync(Guid id)
         {
-            var costumer = await CostumerRepository.GetAsync(id);
+            var costumer = await _costumerRepository.GetAsync(id);
             return ObjectMapper.Map<Costumer, CostumerDto>(costumer);
         }
 
@@ -34,7 +34,7 @@ namespace ecommerce.Costumers
                 input.Sorting = nameof(Costumer.Name);
             }
 
-            var costumers = await CostumerRepository.GetListAsync(
+            var costumers = await _costumerRepository.GetListAsync(
                 input.SkipCount,
                 input.MaxResultCount,
                 input.Sorting,
@@ -42,8 +42,8 @@ namespace ecommerce.Costumers
             );
 
             var totalCount = input.Filter == null
-                ? await CostumerRepository.CountAsync()
-                : await CostumerRepository.CountAsync(
+                ? await _costumerRepository.CountAsync()
+                : await _costumerRepository.CountAsync(
                     costumer => costumer.Name.Contains(input.Filter));
 
             return new PagedResultDto<CostumerDto>(
@@ -55,13 +55,13 @@ namespace ecommerce.Costumers
         [Authorize(ecommercePermissions.Costumers.Create)]
         public async Task<CostumerDto> CreateAsync(CreateCostumerDto input)
         {
-            var costumer = await CostumerManager.CreateAsync(
+            var costumer = await _costumerManager.CreateAsync(
                 input.Name,
                 input.BirthDate,
                 input.Document
             );
 
-            await CostumerRepository.InsertAsync(costumer);
+            await _costumerRepository.InsertAsync(costumer);
 
             return ObjectMapper.Map<Costumer, CostumerDto>(costumer);
         }
@@ -69,23 +69,23 @@ namespace ecommerce.Costumers
         [Authorize(ecommercePermissions.Costumers.Edit)]
         public async Task UpdateAsync(Guid id, UpdateCostumerDto input)
         {
-            var costumer = await CostumerRepository.GetAsync(id);
+            var costumer = await _costumerRepository.GetAsync(id);
 
             if (costumer.Name != input.Name)
             {
-                await CostumerManager.UpdateNameAsync(costumer, input.Name);
+                await _costumerManager.UpdateNameAsync(costumer, input.Name);
             }
 
             costumer.BirthDate = input.BirthDate;
             costumer.Document = input.Document;
 
-            await CostumerRepository.UpdateAsync(costumer);
+            await _costumerRepository.UpdateAsync(costumer);
         }
 
         [Authorize(ecommercePermissions.Costumers.Delete)]
         public async Task DeleteAsync(Guid id)
         {
-            await CostumerRepository.DeleteAsync(id);
+            await _costumerRepository.DeleteAsync(id);
         }
 
 

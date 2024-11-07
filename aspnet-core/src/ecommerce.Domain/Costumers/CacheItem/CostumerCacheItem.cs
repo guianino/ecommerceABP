@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.Caching;
 
-namespace ecommerce
+namespace ecommerce.Costumers
 {
     [CacheName("Costumers")]
     public class CostumerCacheItem

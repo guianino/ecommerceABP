@@ -15,6 +15,7 @@ using Volo.Abp.PermissionManagement.OpenIddict;
 using Volo.Abp.SettingManagement;
 using Volo.Abp.TenantManagement;
 using ecommerce.Costumers;
+using Volo.Abp.Caching;
 
 namespace ecommerce;
 
@@ -61,10 +62,18 @@ public class ecommerceDomainModule : AbpModule
         {
             options.IsEnabled = MultiTenancyConsts.IsEnabled;
         });
-        
+
 
 #if DEBUG
         context.Services.Replace(ServiceDescriptor.Singleton<IEmailSender, NullEmailSender>());
 #endif
+
+    Configure<AbpDistributedCacheOptions>(options =>
+    {
+        options.KeyPrefix = "Ecommerce";
+    });
+
     }
+
+
 }

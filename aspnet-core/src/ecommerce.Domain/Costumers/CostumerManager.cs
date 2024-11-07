@@ -12,18 +12,18 @@ namespace ecommerce.Costumers
 {
     public class CostumerManager : DomainService
     {
-        private readonly ICostumerRepository CostumerRepository;
+        private readonly ICostumerRepository _costumerRepository;
 
         private readonly IDistributedCache<CostumerCacheItem, Guid> _costumerCache;
 
         public CostumerManager(ICostumerRepository costumerRepository)
         {
-            CostumerRepository = costumerRepository;
+            _costumerRepository = costumerRepository;
         }
 
         public async Task<Costumer> CreateAsync(string name, DateTime birthDate, string document)
         {
-            var existingCostumer = await CostumerRepository.FindByNameAsync(name);
+            var existingCostumer = await _costumerRepository.FindByNameAsync(name);
             if (existingCostumer != null)
             {
                 throw new CostumerExistsException(name);
@@ -41,7 +41,7 @@ namespace ecommerce.Costumers
         public async Task UpdateNameAsync(Costumer costumer, string newName)
         {
             Check.NotNull(costumer, nameof(costumer));
-            var existingCostumer = await CostumerRepository.FindByNameAsync(newName);
+            var existingCostumer = await _costumerRepository.FindByNameAsync(newName);
             if (existingCostumer != null && existingCostumer.Id != costumer.Id)
             {
                 throw new CostumerExistsException(newName);
@@ -64,7 +64,7 @@ namespace ecommerce.Costumers
 
         public async Task<CostumerCacheItem> GetCostumerFromDb(Guid id)
         {
-            var costumer = await CostumerRepository.FirstOrDefaultAsync(x => x.Id.Equals(id));
+            var costumer = await _costumerRepository.FirstOrDefaultAsync(x => x.Id.Equals(id));
             var costumerCacheItem = new CostumerCacheItem
             {
                 id = costumer.Id,

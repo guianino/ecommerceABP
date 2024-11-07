@@ -2,12 +2,19 @@ using System;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
+using Volo.Abp.Caching;
+using Volo.Abp.Domain.Repositories;
+using Microsoft.Extensions.Caching.Distributed;
+
+
 
 namespace ecommerce.Costumers
 {
     public class CostumerManager : DomainService
     {
         private readonly ICostumerRepository CostumerRepository;
+
+        private readonly IDistributedCache<CostumerCacheItem, Guid> _costumerCache;
 
         public CostumerManager(ICostumerRepository costumerRepository)
         {
@@ -41,6 +48,31 @@ namespace ecommerce.Costumers
             }
 
             costumer.SetName(newName);
+        }
+
+        public async Task<CostumerCacheItem> GetCostumerFromCache(Guid id)
+        {
+            return await _costumerCache.GetOrAddAsync(
+            id, //cache key
+            async () => await GetCostumerFromDb(id),
+            () => new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(6)
+            }
+        ); 
+        }
+
+        public async Task<CostumerCacheItem> GetCostumerFromDb(Guid id)
+        {
+            var costumer = await CostumerRepository.FirstOrDefaultAsync(x => x.Id.Equals(id));
+            var costumerCacheItem = new CostumerCacheItem
+            {
+                id = costumer.Id,
+                Name = costumer.Name,
+                BirthDate = costumer.BirthDate,
+                Document =  costumer.Document
+            };
+            return costumerCacheItem;
         }
     }
 }

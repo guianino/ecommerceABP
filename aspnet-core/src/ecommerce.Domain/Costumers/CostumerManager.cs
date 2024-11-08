@@ -16,9 +16,10 @@ namespace ecommerce.Costumers
 
         private readonly IDistributedCache<CostumerCacheItem, Guid> _costumerCache;
 
-        public CostumerManager(ICostumerRepository costumerRepository)
+        public CostumerManager(ICostumerRepository costumerRepository, IDistributedCache<CostumerCacheItem, Guid> costumerCache)
         {
             _costumerRepository = costumerRepository;
+            _costumerCache = costumerCache;
         }
 
         public async Task<Costumer> CreateAsync(string name, DateTime birthDate, string document)
@@ -52,27 +53,26 @@ namespace ecommerce.Costumers
 
         public async Task<CostumerCacheItem> GetCostumerFromCache(Guid id)
         {
-            return await _costumerCache.GetOrAddAsync(
-            id, //cache key
-            async () => await GetCostumerFromDb(id),
-            () => new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(6)
-            }
-        ); 
-        }
-
-        public async Task<CostumerCacheItem> GetCostumerFromDb(Guid id)
-        {
-            var costumer = await _costumerRepository.FirstOrDefaultAsync(x => x.Id.Equals(id));
-            var costumerCacheItem = new CostumerCacheItem
-            {
-                id = costumer.Id,
-                Name = costumer.Name,
-                BirthDate = costumer.BirthDate,
-                Document =  costumer.Document
-            };
-            return costumerCacheItem;
+            var cacheItem = await _costumerCache.GetOrAddAsync(
+                id, //cache key
+                async () =>
+                {
+                var costumer = await _costumerRepository.FindAsync(id);
+                var costumerCacheItem = new CostumerCacheItem
+                {
+                    id = costumer.Id,
+                    Name = costumer.Name,
+                    BirthDate = costumer.BirthDate,
+                    Document = costumer.Document
+                };
+                return costumerCacheItem;
+                },
+                () => new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(6)
+                }
+            );
+            return cacheItem;
         }
     }
 }

@@ -23,8 +23,8 @@ namespace ecommerce.Costumers
 
         public async Task<CostumerDto> GetAsync(Guid id)
         {
-            var costumer = await _costumerRepository.GetAsync(id);
-            return ObjectMapper.Map<Costumer, CostumerDto>(costumer);
+            var costumer = await _costumerManager.GetCostumerFromCache(id);
+            return ObjectMapper.Map<CostumerCacheItem, CostumerDto>(costumer);
         }
 
         public async Task<PagedResultDto<CostumerDto>> GetListAsync(GetCostumerListDto input)

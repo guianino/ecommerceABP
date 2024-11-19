@@ -12,5 +12,7 @@ namespace ecommerce.Costumers
     
         [Required]
         public string Document { get; set; }
+
+        public string FileDocument { get; set; }
     }
 }

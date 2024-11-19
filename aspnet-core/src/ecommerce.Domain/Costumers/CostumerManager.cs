@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 using Volo.Abp.Caching;
-using Volo.Abp.Domain.Repositories;
 using Microsoft.Extensions.Caching.Distributed;
+using Volo.Abp.BlobStoring;
 
 
 
@@ -15,14 +15,16 @@ namespace ecommerce.Costumers
         private readonly ICostumerRepository _costumerRepository;
 
         private readonly IDistributedCache<CostumerCacheItem, Guid> _costumerCache;
+        private readonly IBlobContainer<DocumentContainer> _documentContainer;
 
-        public CostumerManager(ICostumerRepository costumerRepository, IDistributedCache<CostumerCacheItem, Guid> costumerCache)
+        public CostumerManager(ICostumerRepository costumerRepository, IDistributedCache<CostumerCacheItem, Guid> costumerCache, IBlobContainer<DocumentContainer> documentContainer)
         {
             _costumerRepository = costumerRepository;
             _costumerCache = costumerCache;
+            _documentContainer = documentContainer;
         }
 
-        public async Task<Costumer> CreateAsync(string name, DateTime birthDate, string document)
+        public async Task<Costumer> CreateAsync(string name, DateTime birthDate, string document, string fileDocument)
         {
             var existingCostumer = await _costumerRepository.FindByNameAsync(name);
             if (existingCostumer != null)
@@ -34,7 +36,8 @@ namespace ecommerce.Costumers
                 GuidGenerator.Create(),
                 name,
                 birthDate,
-                document
+                document,
+                fileDocument
             );
 
         }

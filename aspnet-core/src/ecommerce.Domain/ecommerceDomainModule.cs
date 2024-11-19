@@ -14,8 +14,11 @@ using Volo.Abp.PermissionManagement.Identity;
 using Volo.Abp.PermissionManagement.OpenIddict;
 using Volo.Abp.SettingManagement;
 using Volo.Abp.TenantManagement;
-using ecommerce.Costumers;
 using Volo.Abp.Caching;
+using Volo.Abp.BlobStoring;
+using Volo.Abp.BlobStoring.Minio;
+using Microsoft.Extensions.Configuration;
+
 
 namespace ecommerce;
 
@@ -30,10 +33,14 @@ namespace ecommerce;
     typeof(AbpPermissionManagementDomainIdentityModule),
     typeof(AbpSettingManagementDomainModule),
     typeof(AbpTenantManagementDomainModule),
-    typeof(AbpEmailingModule)
+    typeof(AbpEmailingModule),
+    typeof(AbpBlobStoringMinioModule)
 )]
 public class ecommerceDomainModule : AbpModule
 {
+
+    private IConfiguration Configuration { get; set; }
+
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
         Configure<AbpLocalizationOptions>(options =>
@@ -63,15 +70,33 @@ public class ecommerceDomainModule : AbpModule
             options.IsEnabled = MultiTenancyConsts.IsEnabled;
         });
 
+        Configuration = context.Services.GetConfiguration();
+
 
 #if DEBUG
         context.Services.Replace(ServiceDescriptor.Singleton<IEmailSender, NullEmailSender>());
 #endif
 
-    Configure<AbpDistributedCacheOptions>(options =>
-    {
-        options.KeyPrefix = "Ecommerce";
-    });
+        Configure<AbpDistributedCacheOptions>(options =>
+        {
+            options.KeyPrefix = "Ecommerce";
+        });
+
+        Configure<AbpBlobStoringOptions>(options =>
+        {
+            options.Containers.ConfigureDefault(container =>
+            {
+                container.UseMinio(minio =>
+                {
+                    minio.EndPoint = Configuration["BlobStorage:Minio:EndPoint"];
+                    minio.AccessKey = Configuration["BlobStorage:Minio:AccessKey"];
+                    minio.SecretKey = Configuration["BlobStorage:Minio:SecretKey"];
+                    minio.BucketName = Configuration["BlobStorage:Minio:BucketName"];
+                    minio.CreateBucketIfNotExists = true;
+                });
+            });
+        });
+
 
     }
 

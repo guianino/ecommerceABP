@@ -5,6 +5,9 @@ using ecommerce.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
+using Microsoft.AspNetCore.Http;
+using Volo.Abp;
+using System.IO;
 
 
 namespace ecommerce.Costumers
@@ -93,9 +96,23 @@ namespace ecommerce.Costumers
             await _costumerManager.GetDocumentAsync(id);
         }
 
-        public async Task SaveDocumentFileAsync(Guid id, byte[] documentFile)
+        public async Task SaveDocumentFileAsync(Guid id, IFormFile documentFile)
         {
-            await _costumerManager.SaveFileDocumentAsync(id, documentFile);
+            if (documentFile == null || documentFile.Length == 0)
+            {
+                throw new BusinessException("O arquivo enviado está vazio ou é nulo.", nameof(documentFile));
+            }
+
+            // Converter IFormFile para byte[]
+            byte[] fileBytes;
+            using (var memoryStream = new MemoryStream())
+            {
+                await documentFile.CopyToAsync(memoryStream);
+                fileBytes = memoryStream.ToArray();
+            }
+
+            // Passar o array de bytes para o método de salvamento
+            await _costumerManager.SaveFileDocumentAsync(id, fileBytes);
         }
     }
 }

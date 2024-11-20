@@ -2,7 +2,7 @@ using Volo.Abp.BlobStoring;
 
 namespace ecommerce.Costumers
 {
-    [BlobContainerName("Document")]
+    [BlobContainerName("document")]
     public class DocumentContainer
     {
         

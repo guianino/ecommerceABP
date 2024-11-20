@@ -28,7 +28,7 @@ namespace ecommerce.Costumers
             var existingCostumer = await _costumerRepository.FindByNameAsync(name);
             if (existingCostumer != null)
             {
-                throw new CostumerExistsException(name);
+                throw new BusinessException(ExceptionsEcommerce.CostumersExceptions.CostumerAlreadyExist);
             }
 
             return new Costumer(
@@ -46,7 +46,7 @@ namespace ecommerce.Costumers
             var existingCostumer = await _costumerRepository.FindByNameAsync(newName);
             if (existingCostumer != null && existingCostumer.Id != costumer.Id)
             {
-                throw new CostumerExistsException(newName);
+                throw new BusinessException(ExceptionsEcommerce.CostumersExceptions.CostumerAlreadyExist);
             }
 
             costumer.SetName(newName);
@@ -78,7 +78,7 @@ namespace ecommerce.Costumers
         public async Task SaveFileDocumentAsync(Guid id, byte[] file)
         {
             if(file == null)
-                throw new BusinessException("");
+                throw new BusinessException(ExceptionsEcommerce.CostumersExceptions.DocumentNull);
             var idStr = id.ToString();
             await _documentContainer.SaveAsync(idStr, file);
         }

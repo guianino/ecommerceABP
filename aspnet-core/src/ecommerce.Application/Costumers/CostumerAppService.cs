@@ -110,8 +110,6 @@ namespace ecommerce.Costumers
                 await documentFile.CopyToAsync(memoryStream);
                 fileBytes = memoryStream.ToArray();
             }
-
-            // Passar o array de bytes para o método de salvamento
             await _costumerManager.SaveFileDocumentAsync(id, fileBytes);
         }
     }

@@ -23,7 +23,7 @@ namespace ecommerce.Costumers
             _documentContainer = documentContainer;
         }
 
-        public async Task<Costumer> CreateAsync(string name, DateTime birthDate, string document, string fileDocument)
+        public async Task<Costumer> CreateAsync(string name, DateTime birthDate, string document)
         {
             var existingCostumer = await _costumerRepository.FindByNameAsync(name);
             if (existingCostumer != null)
@@ -35,8 +35,7 @@ namespace ecommerce.Costumers
                 GuidGenerator.Create(),
                 name,
                 birthDate,
-                document,
-                fileDocument
+                document
             );
 
         }

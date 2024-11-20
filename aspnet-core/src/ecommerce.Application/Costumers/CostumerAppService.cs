@@ -58,8 +58,7 @@ namespace ecommerce.Costumers
             var costumer = await _costumerManager.CreateAsync(
                 input.Name,
                 input.BirthDate,
-                input.Document,
-                input.FileDocument
+                input.Document
             );
 
             await _costumerRepository.InsertAsync(costumer);

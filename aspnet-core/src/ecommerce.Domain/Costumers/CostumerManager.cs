@@ -13,7 +13,6 @@ namespace ecommerce.Costumers
     public class CostumerManager : DomainService
     {
         private readonly ICostumerRepository _costumerRepository;
-
         private readonly IDistributedCache<CostumerCacheItem, Guid> _costumerCache;
         private readonly IBlobContainer<DocumentContainer> _documentContainer;
 
@@ -57,18 +56,18 @@ namespace ecommerce.Costumers
         public async Task<CostumerCacheItem> GetCostumerFromCache(Guid id)
         {
             var cacheItem = await _costumerCache.GetOrAddAsync(
-                id, //cache key
+                id, 
                 async () =>
                 {
-                var costumer = await _costumerRepository.FindAsync(id);
-                var costumerCacheItem = new CostumerCacheItem
-                {
-                    id = costumer.Id,
-                    Name = costumer.Name,
-                    BirthDate = costumer.BirthDate,
-                    Document = costumer.Document
-                };
-                return costumerCacheItem;
+                    var costumer = await _costumerRepository.FindAsync(id);
+                    var costumerCacheItem = new CostumerCacheItem
+                    {
+                        id = costumer.Id,
+                        Name = costumer.Name,
+                        BirthDate = costumer.BirthDate,
+                        Document = costumer.Document
+                    };
+                    return costumerCacheItem;
                 },
                 () => new DistributedCacheEntryOptions
                 {
@@ -76,6 +75,19 @@ namespace ecommerce.Costumers
                 }
             );
             return cacheItem;
+        }
+        public async Task SaveFileDocumentAsync(Guid id, byte[] file)
+        {
+            if(file == null)
+                throw new BusinessException("");
+            var idStr = id.ToString();
+            await _documentContainer.SaveAsync(idStr, file);
+        }
+
+        public async Task GetDocumentAsync(Guid id)
+        {
+            var idStr = id.ToString();
+            await _documentContainer.GetAllBytesOrNullAsync(idStr);
         }
     }
 }

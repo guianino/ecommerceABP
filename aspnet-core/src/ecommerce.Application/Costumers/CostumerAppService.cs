@@ -89,9 +89,14 @@ namespace ecommerce.Costumers
             await _costumerRepository.DeleteAsync(id);
         }
 
+        public async Task GetDocumentFileAsync(Guid id)
+        {
+            await _costumerManager.GetDocumentAsync(id);
+        }
 
-
-
-
+        public async Task SaveDocumentFileAsync(Guid id, byte[] documentFile)
+        {
+            await _costumerManager.SaveFileDocumentAsync(id, documentFile);
+        }
     }
 }

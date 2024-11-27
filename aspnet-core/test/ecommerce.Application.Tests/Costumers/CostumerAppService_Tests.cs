@@ -6,7 +6,7 @@ using Xunit;
 
 namespace ecommerce.Costumers
 {
-    public class CostumerAppService_Tests<TStartupModule> : ecommerceApplicationTestBase<TStartupModule> where TStartupModule : IAbpModule
+    public abstract class CostumerAppService_Tests<TStartupModule> : ecommerceApplicationTestBase<TStartupModule> where TStartupModule : IAbpModule
     {
         private readonly ICostumerAppService _costumerAppService;
 

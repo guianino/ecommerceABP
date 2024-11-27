@@ -84,14 +84,15 @@ public class ecommerceDomainModule : AbpModule
 
         Configure<AbpBlobStoringOptions>(options =>
         {
+
             options.Containers.ConfigureDefault(container =>
             {
                 container.UseMinio(minio =>
                 {
-                    minio.EndPoint = Configuration["BlobStorage:Minio:EndPoint"];
-                    minio.AccessKey = Configuration["BlobStorage:Minio:AccessKey"];
-                    minio.SecretKey = Configuration["BlobStorage:Minio:SecretKey"];
-                    minio.BucketName = Configuration["BlobStorage:Minio:BucketName"];
+                    minio.EndPoint = "localhost:9000";
+                    minio.AccessKey = "minioadmin";
+                    minio.SecretKey = "minioadmin";
+                    minio.BucketName = "document";
                     minio.CreateBucketIfNotExists = true;
                 });
             });

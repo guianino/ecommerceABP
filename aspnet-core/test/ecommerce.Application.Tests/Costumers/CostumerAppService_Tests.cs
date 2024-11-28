@@ -22,7 +22,7 @@ namespace ecommerce.Costumers
 
             result.TotalCount.ShouldBeGreaterThanOrEqualTo(2);
             result.Items.ShouldContain(costumer => costumer.Name == "Fulano Silva");
-            result.Items.ShouldContain(costumer => costumer.Name == "Ciclano Oliveira>");
+            result.Items.ShouldContain(costumer => costumer.Name == "Ciclano Oliveira");
         }
 
         [Fact]
@@ -38,7 +38,7 @@ namespace ecommerce.Costumers
             );
 
             costumerDto.Id.ShouldNotBe(Guid.Empty);
-            costumerDto.Name.ShouldBe("Edward Bellamy");
+            costumerDto.Name.ShouldBe("Guilherme Ianino");
         }
 
     }
